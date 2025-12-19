@@ -20,7 +20,11 @@ def load_or_create_access_data():
         with open(DATA_FILE, "w") as f:
             json.dump({"first_run": now.isoformat()}, f)
         return now
-
+#to get path of resource when built with pyinstaller
+def resource_path(relative_path):
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 class Ransom_UI(ctk.CTk):
     def __init__(self):
         super().__init__()
