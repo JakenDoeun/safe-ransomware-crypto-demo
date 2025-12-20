@@ -91,10 +91,9 @@ python src/Server.py
 
    - without build .EXE
 
-   ```bash
-   python src/client.py
-   ```
-
+     ```bash
+     python src/client.py
+     ```
    - build .EXE (windows only)
 
      ```bash
