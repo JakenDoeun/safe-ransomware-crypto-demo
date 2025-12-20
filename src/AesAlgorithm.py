@@ -74,15 +74,16 @@ def decrypt_file(file_path, key):
 def encrypt_directory(target_dir, key):
     for file_path in iter_allowed_files(target_dir):
         try:
-            encrypt_file(file_path, key)  # your existing function
+            encrypt_file(file_path, key)
         except Exception:
             continue
 
-def decrypt_directory(dir_path, key):
-    for root, _, files in os.walk(dir_path):
-        for filename in files:
-            file_path = os.path.join(root, filename)
-            decrypt_file(file_path, key)
+def decrypt_directory(target_dir, key):
+    for file_path in iter_allowed_files(target_dir):
+        try:
+            decrypt_file(file_path, key)  
+        except Exception:
+            continue
 
 
 #for testing purpose only
